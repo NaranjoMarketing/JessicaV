@@ -649,12 +649,8 @@
             </div>
 
             <div class="w-full space-y-2">
-                <a id="modal-whatsapp-direct-btn" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs shadow-lg transition flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Comprobante / Hablar por WhatsApp
-                </a>
-
-                <button onclick="closeSuccessModal()" class="w-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold py-3 px-4 rounded-2xl text-xs transition">
-                    Cerrar e ir al Menú
+                <button onclick="closeSuccessModal()" class="w-full bg-dulce-darkRose hover:bg-rose-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check text-base"></i> Entendido / Volver al Menú
                 </button>
             </div>
         </div>
@@ -772,6 +768,9 @@
             
             // Sincronizar en segundo plano con la API de Google Sheets
             loadDataFromCloud();
+
+            // Sincronización automática periódica (cada 12 segundos) para recibir pedidos en tiempo real
+            setInterval(loadDataFromCloud, 12000);
         }
 
         async function loadDataFromCloud() {
@@ -1090,22 +1089,6 @@
             document.getElementById('modal-item-name').innerText = order.itemTitle;
             document.getElementById('modal-cust-name').innerText = order.clientName;
             document.getElementById('modal-total-pay').innerText = `$${order.total.toLocaleString()}`;
-
-            let waMsg = `🍰 *NUEVO PEDIDO - JESSICA V DULCE BOCADO*\n`;
-            waMsg += `------------------------------------\n`;
-            waMsg += `*ID Orden:* #${order.id}\n`;
-            waMsg += `*Cliente:* ${order.clientName}\n`;
-            waMsg += `*Teléfono:* ${order.clientPhone}\n`;
-            waMsg += `*Dirección:* ${order.address}\n`;
-            waMsg += `------------------------------------\n`;
-            waMsg += `*Detalle:* ${order.itemTitle}\n`;
-            waMsg += `*Pago:* ${order.payment}\n`;
-            waMsg += `*Total:* $${order.total.toLocaleString()}\n`;
-            waMsg += `------------------------------------\n`;
-            waMsg += `_Por favor confirma la entrega de mi pedido. Gracias!_`;
-
-            const waUrl = `https://wa.me/${JESSICA_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
-            document.getElementById('modal-whatsapp-direct-btn').href = waUrl;
 
             const modal = document.getElementById('order-success-modal');
             if (modal) {
@@ -1467,31 +1450,40 @@
                 if(o.status === 'En camino') statusBadgeClass = "bg-blue-100 text-blue-800 border-blue-200";
                 if(o.status === 'Entregado') statusBadgeClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
 
-                let notifyMsg = `¡Hola ${o.clientName}! 🍰 Jessica V te saluda. Tu pedido *#${o.id}* (${o.itemTitle}) ha sido procesado y se encuentra en estado: *${o.status.toUpperCase()}*. ${o.status==='En camino'?'🛵 El domiciliario va hacia tu dirección.':''}`;
-                let clientCleanPhone = o.clientPhone.replace(/[^0-9]/g, '');
-                if(!clientCleanPhone.startsWith('57')) clientCleanPhone = '57' + clientCleanPhone;
-                let waClientUrl = `https://wa.me/${clientCleanPhone}?text=${encodeURIComponent(notifyMsg)}`;
+                let clientName = o.clientName || 'Cliente';
+                let clientPhone = o.clientPhone || 'Sin teléfono';
+                let address = o.address || 'Sin dirección';
+                let itemTitle = o.itemTitle || 'Sin detalle';
+                let payment = o.payment || 'Por definir';
+                let total = Number(o.total) || 0;
+                let status = o.status || 'Pendiente';
+                let type = o.type || 'Pedido';
+
+                let notifyMsg = `¡Hola ${clientName}! 🍰 Jessica V te saluda. Tu pedido *#${o.id}* (${itemTitle}) ha sido procesado y se encuentra en estado: *${status.toUpperCase()}*. ${status==='En camino'?'🛵 El domiciliario va hacia tu dirección.':''}`;
+                let clientCleanPhone = String(clientPhone).replace(/[^0-9]/g, '');
+                if(clientCleanPhone && !clientCleanPhone.startsWith('57')) clientCleanPhone = '57' + clientCleanPhone;
+                let waClientUrl = clientCleanPhone ? `https://wa.me/${clientCleanPhone}?text=${encodeURIComponent(notifyMsg)}` : '#';
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-dulce-warmCream/60 transition">
                         <td class="p-3 font-extrabold text-dulce-darkRose">${o.id}</td>
-                        <td class="p-3"><span class="bg-dulce-rose text-dulce-chocolate font-bold px-2 py-0.5 rounded text-[10px]">${o.type}</span></td>
+                        <td class="p-3"><span class="bg-dulce-rose text-dulce-chocolate font-bold px-2 py-0.5 rounded text-[10px]">${type}</span></td>
                         <td class="p-3">
-                            <strong class="text-dulce-chocolate block">${o.clientName}</strong>
-                            <span class="text-neutral-500 text-[10px]"><i class="fa-solid fa-phone"></i> ${o.clientPhone}</span>
+                            <strong class="text-dulce-chocolate block">${clientName}</strong>
+                            <span class="text-neutral-500 text-[10px]"><i class="fa-solid fa-phone"></i> ${clientPhone}</span>
                         </td>
-                        <td class="p-3 font-medium text-neutral-600 max-w-xs break-words">${o.address}</td>
-                        <td class="p-3 font-semibold text-dulce-chocolate max-w-xs">${o.itemTitle}</td>
-                        <td class="p-3 text-[10px] font-bold text-neutral-500">${o.payment}</td>
-                        <td class="p-3 font-black text-dulce-darkRose text-sm">$${o.total.toLocaleString()}</td>
+                        <td class="p-3 font-medium text-neutral-600 max-w-xs break-words">${address}</td>
+                        <td class="p-3 font-semibold text-dulce-chocolate max-w-xs">${itemTitle}</td>
+                        <td class="p-3 text-[10px] font-bold text-neutral-500">${payment}</td>
+                        <td class="p-3 font-black text-dulce-darkRose text-sm">$${total.toLocaleString()}</td>
                         <td class="p-3 text-center space-y-1.5">
                             <select onchange="updateOrderStatus('${o.id}', this.value)" class="bg-white border border-dulce-pink/40 px-2 py-1 rounded-lg font-bold text-[10px] text-dulce-chocolate outline-none">
-                                <option value="Pendiente" ${o.status==='Pendiente'?'selected':''}>Pendiente</option>
-                                <option value="En camino" ${o.status==='En camino'?'selected':''}>En Camino 🛵</option>
-                                <option value="Entregado" ${o.status==='Entregado'?'selected':''}>Entregado ✓</option>
+                                <option value="Pendiente" ${status==='Pendiente'?'selected':''}>Pendiente</option>
+                                <option value="En camino" ${status==='En camino'?'selected':''}>En Camino 🛵</option>
+                                <option value="Entregado" ${status==='Entregado'?'selected':''}>Entregado ✓</option>
                             </select>
 
-                            <a href="${waClientUrl}" target="_blank" class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] shadow-sm transition">
+                            <a href="${waClientUrl}" target="_blank" class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] shadow-sm transition ${!clientCleanPhone ? 'pointer-events-none opacity-50' : ''}">
                                 <i class="fa-brands fa-whatsapp"></i> Avisar
                             </a>
                         </td>
