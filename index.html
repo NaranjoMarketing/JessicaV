@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica V - Dulce Bocado | Postres del Día & Tortas Especiales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sacramento&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dulce: {
+                            rose: '#F8E8EE',
+                            pink: '#F2BED1',
+                            darkRose: '#D80032',
+                            deepPink: '#E87A90',
+                            chocolate: '#3D2314',
+                            warmCream: '#FFF8F3',
+                            gold: '#D4AF37',
+                            softMint: '#E8F5E9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        cursive: ['"Sacramento"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFF8F3;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-dulce-chocolate min-h-screen flex flex-col justify-between selection:bg-dulce-pink selection:text-dulce-chocolate" onload="initApp()">
+
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none w-[90%] max-w-md text-center"></div>
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-dulce-pink/30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- LOGO: Al hacer clic desoculta/oculta los botones -->
+            <a href="#" onclick="toggleHeaderActions(event)" class="flex items-center gap-2.5 group cursor-pointer">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-dulce-pink to-dulce-rose flex items-center justify-center text-dulce-darkRose text-xl shadow-inner group-hover:scale-105 transition">
+                    <i class="fa-solid fa-cake-candles"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif font-black text-lg md:text-xl text-dulce-chocolate leading-tight tracking-tight">
+                        Jessica V
+                    </h1>
+                    <span class="font-cursive text-dulce-deepPink text-base md:text-lg -mt-1 block">Dulce Bocado</span>
+                </div>
+            </a>
+
+            <!-- BOTONES INVISIBLES POR DEFECTO (Se activan al tocar el logo) -->
+            <div id="header-quick-actions" class="hidden flex items-center gap-2 transition-all duration-300">
+                <button onclick="scrollToSection('tortas-section')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-dulce-rose hover:bg-dulce-pink text-dulce-chocolate transition border border-dulce-pink/40">
+                    <i class="fa-solid fa-birthday-cake text-dulce-deepPink"></i> Tortas a Pedido
+                </button>
+
+                <button id="admin-mode-toggle-btn" onclick="openAdminAuthModal()" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-dulce-chocolate text-dulce-rose hover:bg-black transition shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-lock"></i> <span id="admin-toggle-text">Panel Jessica</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="public-view" class="flex-grow max-w-5xl mx-auto w-full px-4 py-6 md:py-10 space-y-12">
+        
+        <!-- HERO BANNER -->
+        <section class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-dulce-rose via-white to-dulce-rose/50 border border-dulce-pink/40 shadow-xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+            <div class="flex-1 space-y-4 text-center md:text-left z-10">
+                <span class="inline-block px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest bg-white text-dulce-deepPink border border-dulce-pink shadow-sm">
+                    ✨ Repostería Artesanal & Por Encargo
+                </span>
+                <h2 class="font-serif text-3xl md:text-5xl font-extrabold text-dulce-chocolate leading-tight">
+                    Endulza tus momentos especiales
+                </h2>
+                <p class="text-xs md:text-sm text-neutral-600 leading-relaxed max-w-xl">
+                    Cada semana preparamos porciones exclusivas de nuestro <strong class="text-dulce-chocolate">Postre del Día</strong> y diseñamos <strong class="text-dulce-chocolate">Tortas Especiales</strong> personalizadas para tus eventos. ¡Haz tu pedido rápido sin filas ni demoras!
+                </p>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+                    <a href="#postre-section" class="px-5 py-2.5 rounded-2xl bg-dulce-darkRose hover:bg-rose-700 text-white font-bold text-xs shadow-md transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-spoon"></i> Pedir Postre del Día
+                    </a>
+                    <a href="#tortas-section" class="px-5 py-2.5 rounded-2xl bg-white hover:bg-dulce-rose text-dulce-chocolate border border-dulce-pink font-bold text-xs shadow-sm transition">
+                        🎂 Cotizar Torta de Cumpleaños
+                    </a>
+                </div>
+            </div>
+
+            <div class="w-full md:w-80 h-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl relative shrink-0 border-4 border-white">
+                <img id="hero-display-img" src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=800" alt="Jessica V Postres" class="w-full h-full object-cover transform hover:scale-105 transition duration-700">
+                <div class="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-md p-2.5 rounded-xl text-center shadow-lg border border-dulce-pink/30">
+                    <span class="text-[10px] uppercase tracking-wider font-extrabold text-dulce-deepPink block">Hecho con Amor por</span>
+                    <span class="font-serif font-bold text-xs text-dulce-chocolate">Jessica V. - Cheff Repostera</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="postre-section" class="scroll-mt-20">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-full bg-dulce-pink flex items-center justify-center text-dulce-darkRose">
+                    <i class="fa-solid fa-star text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-dulce-chocolate">Postre del Día</h3>
+                    <p class="text-xs text-neutral-500">Porciones frescas del día - Stock limitado por horneado</p>
+                </div>
+            </div>
+
+            <!-- CONTAINER DEL POSTRE ACTIVO -->
+            <div id="postre-active-card" class="bg-white rounded-3xl border border-dulce-pink/40 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-all">
+                <div class="md:col-span-5 relative min-h-[280px] bg-dulce-rose">
+                    <img id="postre-img-val" src="" alt="Postre del Día" class="w-full h-full object-cover">
+                    <div id="stock-badge-container" class="absolute top-4 left-4 bg-dulce-chocolate/90 text-white text-xs font-extrabold px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md border border-white/20 flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-pie text-dulce-pink"></i> <span id="postre-stock-counter">Cargando...</span>
+                    </div>
+                </div>
+
+                <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-between space-y-6">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="bg-dulce-rose text-dulce-darkRose text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border border-dulce-pink">
+                                ¡Edición Limitada!
+                            </span>
+                            <span id="postre-price-tag" class="font-black text-2xl text-dulce-darkRose">
+                                $0
+                            </span>
+                        </div>
+                        <h4 id="postre-title-val" class="font-serif text-2xl md:text-3xl font-bold text-dulce-chocolate mb-2">
+                            Cargando...
+                        </h4>
+                        <p id="postre-desc-val" class="text-xs md:text-sm text-neutral-600 leading-relaxed font-light">
+                            Obteniendo detalles del postre del día preparado hoy por Jessica...
+                        </p>
+                    </div>
+
+                    <!-- FORMULARIO DIRECTO RÁPIDO DE PEDIDO -->
+                    <form onsubmit="submitDailyDessertOrder(event)" class="bg-dulce-warmCream p-4 md:p-5 rounded-2xl border border-dulce-pink/30 space-y-4">
+                        <h5 class="font-serif text-sm font-bold text-dulce-chocolate border-b border-dulce-pink/20 pb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-cart-shopping text-dulce-deepPink"></i> Completa tu pedido rápido
+                        </h5>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Nombre Completo *</label>
+                                <input type="text" id="postre-cust-name" required placeholder="Tu nombre" class="w-full bg-white border border-dulce-pink/40 py-2 px-3 rounded-xl text-xs font-semibold text-dulce-chocolate outline-none focus:ring-2 focus:ring-dulce-pink">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Celular / WhatsApp *</label>
+                                <input type="tel" id="postre-cust-phone" required placeholder="ej: 3101234567" class="w-full bg-white border border-dulce-pink/40 py-2 px-3 rounded-xl text-xs font-semibold text-dulce-chocolate outline-none focus:ring-2 focus:ring-dulce-pink">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Dirección Exacta de Domicilio *</label>
+                            <input type="text" id="postre-cust-address" required placeholder="Calle, Barrio, Número..." class="w-full bg-white border border-dulce-pink/40 py-2 px-3 rounded-xl text-xs font-semibold text-dulce-chocolate outline-none focus:ring-2 focus:ring-dulce-pink mb-2">
+                            <input type="text" id="postre-cust-specs" required placeholder="Especificación para llegar (ej. Fachada blanca, frente al parque)" class="w-full bg-white border border-dulce-pink/40 py-2 px-3 rounded-xl text-xs font-medium text-dulce-chocolate outline-none focus:ring-2 focus:ring-dulce-pink">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Porciones a Pedir *</label>
+                                <div class="flex items-center bg-white border border-dulce-pink/40 rounded-xl overflow-hidden">
+                                    <button type="button" onclick="changeDessertQty(-1)" class="px-3 py-2 text-dulce-chocolate hover:bg-dulce-rose font-bold"><i class="fa-solid fa-minus text-xs"></i></button>
+                                    <span id="postre-qty-display" class="flex-1 text-center font-extrabold text-sm text-dulce-chocolate">1</span>
+                                    <button type="button" onclick="changeDessertQty(1)" class="px-3 py-2 text-dulce-chocolate hover:bg-dulce-rose font-bold"><i class="fa-solid fa-plus text-xs"></i></button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Método de Pago *</label>
+                                <select id="postre-cust-payment" onchange="toggleCashField(this.value, 'postre')" class="w-full bg-white border border-dulce-pink/40 py-2 px-3 rounded-xl text-xs font-bold text-dulce-chocolate outline-none">
+                                    <option value="Transferencia">Transferencia (Nequi / Bancolombia)</option>
+                                    <option value="Efectivo">Efectivo contra entrega</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="postre-cash-note-container" class="hidden">
+                            <label class="block text-[10px] font-extrabold uppercase text-dulce-darkRose mb-1">¿Con cuánto billete pagas? (Para llevar vueltas exactas) *</label>
+                            <input type="text" id="postre-cash-note" placeholder="ej. Pago con billete de $50.000" class="w-full bg-white border border-dulce-darkRose/40 py-2 px-3 rounded-xl text-xs font-bold text-dulce-chocolate outline-none">
+                        </div>
+
+                        <div class="pt-2 border-t border-dulce-pink/20 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-neutral-400 block uppercase font-bold">Total a pagar:</span>
+                                <span id="postre-order-total-lbl" class="font-black text-xl text-dulce-darkRose">$0</span>
+                            </div>
+
+                            <button type="submit" class="bg-dulce-darkRose hover:bg-rose-700 text-white font-extrabold px-6 py-3 rounded-xl text-xs shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Confirmar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- CONTAINER CUANDO EL STOCK SE AGOTA O SE DESACTIVA -->
+            <div id="postre-soldout-card" class="hidden bg-white rounded-3xl border border-dulce-pink/30 shadow-xl overflow-hidden p-8 text-center space-y-6">
+                <div class="w-20 h-20 bg-dulce-rose text-dulce-deepPink rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-heart-crack"></i>
+                </div>
+                <div class="max-w-md mx-auto space-y-2">
+                    <h4 class="font-serif text-2xl md:text-3xl font-bold text-dulce-chocolate">
+                        ¡Pronto estaremos de vuelta con más sabores deliciosos!
+                    </h4>
+                    <p class="text-xs text-neutral-500">
+                        Las porciones del postre de hoy han sido vendidas en su totalidad o nos encontramos horneando la siguiente tanda. ¡Te invitamos a ver nuestras tortas especiales o visitarnos en la próxima entrega!
+                    </p>
+                </div>
+
+                <div class="max-w-2xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 pt-4">
+                    <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=300" alt="Dessert 1" class="rounded-2xl h-28 w-full object-cover shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&q=80&w=300" alt="Dessert 2" class="rounded-2xl h-28 w-full object-cover shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=300" alt="Dessert 3" class="rounded-2xl h-28 w-full object-cover shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=300" alt="Dessert 4" class="rounded-2xl h-28 w-full object-cover shadow-sm">
+                </div>
+            </div>
+        </section>
+
+        <section id="tortas-section" class="scroll-mt-20 pt-6">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-dulce-pink flex items-center justify-center text-dulce-darkRose">
+                        <i class="fa-solid fa-birthday-cake text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-dulce-chocolate">Tortas Especiales sobre Pedido</h3>
+                        <p class="text-xs text-neutral-500">Disponibles todos los días para tus celebraciones y cumpleaños</p>
+                    </div>
+                </div>
+                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full border border-emerald-200 hidden sm:inline-block">
+                    🟢 Pedidos Abiertos 24/7
+                </span>
+            </div>
+
+            <!-- GRID DE GALERÍA DE TORTAS (2 COLUMNAS EN MÓVIL) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8" id="cakes-catalog-grid">
+                <!-- Se inyectan las opciones de tortas dinámicamente -->
+            </div>
+
+            <!-- FORMULARIO DE COTIZACIÓN Y COMPRA DE TORTA -->
+            <div id="cake-order-box" class="bg-white rounded-3xl border border-dulce-pink/40 shadow-xl p-6 md:p-8 space-y-6">
+                <div class="border-b border-dulce-pink/20 pb-4 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-wider text-dulce-deepPink">Personalización en línea</span>
+                        <h4 class="font-serif text-2xl font-bold text-dulce-chocolate" id="selected-cake-title-display">
+                            Selecciona una Torta de la Galería
+                        </h4>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] text-neutral-400 uppercase font-bold block">Precio Estimado:</span>
+                        <span id="cake-calculated-price" class="font-black text-2xl text-dulce-darkRose">$0</span>
+                    </div>
+                </div>
+
+                <form onsubmit="submitCakeOrder(event)" class="space-y-4 text-xs">
+                    <input type="hidden" id="cake-selected-id" value="">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-extrabold uppercase text-neutral-500 mb-1">Para cuántas personas *</label>
+                            <select id="cake-portions-select" onchange="recalculateCakePrice()" class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                                <option value="10">10 Personas</option>
+                                <option value="15" selected>15 Personas</option>
+                                <option value="20">20 Personas</option>
+                                <option value="30">30 Personas</option>
+                                <option value="50">50 Personas (Gran Evento)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-extrabold uppercase text-neutral-500 mb-1">Sabor de Bizcocho *</label>
+                            <select id="cake-flavor-select" class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                                <!-- Dinámico -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-extrabold uppercase text-neutral-500 mb-1">Relleno Especial *</label>
+                            <select id="cake-filling-select" class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                                <!-- Dinámico -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-extrabold uppercase text-neutral-500 mb-1">Fecha Necesitada del Evento *</label>
+                            <input type="date" id="cake-event-date" required class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-extrabold uppercase text-neutral-500 mb-1">Mensaje en la Torta (Ej: "Feliz Cumple Laura")</label>
+                            <input type="text" id="cake-custom-message" placeholder="Escribe el letrero de la torta..." class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-semibold text-dulce-chocolate outline-none">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-dulce-pink/20 space-y-3">
+                        <h5 class="font-serif font-bold text-sm text-dulce-chocolate">Datos para la Entrega de la Torta</h5>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="cake-cust-name" required placeholder="Tu Nombre Completo *" class="w-full bg-white border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-semibold text-dulce-chocolate outline-none">
+                            <input type="tel" id="cake-cust-phone" required placeholder="Número de WhatsApp *" class="w-full bg-white border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-semibold text-dulce-chocolate outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="cake-cust-address" required placeholder="Dirección del Evento o Domicilio *" class="w-full bg-white border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-semibold text-dulce-chocolate outline-none">
+                            <input type="text" id="cake-cust-specs" required placeholder="Especificaciones de entrega (Ej. Casa esquinera) *" class="w-full bg-white border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-medium text-dulce-chocolate outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase text-neutral-500 mb-1">Método de Pago *</label>
+                                <select id="cake-cust-payment" onchange="toggleCashField(this.value, 'cake')" class="w-full bg-white border border-dulce-pink/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                                    <option value="Transferencia">Transferencia (Nequi / Bancolombia)</option>
+                                    <option value="Efectivo">Efectivo contra entrega</option>
+                                </select>
+                            </div>
+
+                            <div id="cake-cash-note-container" class="hidden">
+                                <input type="text" id="cake-cash-note" placeholder="¿Con cuánto dinero vas a cancelar? *" class="w-full bg-white border border-dulce-darkRose/40 py-2.5 px-3 rounded-xl font-bold text-dulce-chocolate outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" class="w-full sm:w-auto bg-dulce-chocolate hover:bg-black text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-dulce-pink"></i> Reservar Torta Especial
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <main id="admin-view" class="hidden flex-grow max-w-6xl mx-auto w-full px-4 py-6 md:py-8 space-y-6">
+        
+        <!-- HEADER ADMIN -->
+        <div class="bg-dulce-chocolate text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-dulce-pink text-dulce-chocolate flex items-center justify-center text-2xl font-bold shadow-inner">
+                    <i class="fa-solid fa-kitchen-set"></i>
+                </div>
+                <div>
+                    <h2 class="font-serif text-2xl font-bold">Panel de Administración - Jessica V</h2>
+                    <p class="text-xs text-dulce-pink font-light">Control de Pedidos, Menús y Sincronización en la Nube</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="refreshOrdersFromStorage()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate"></i> Sincronizar
+                </button>
+                <button onclick="exitAdminView()" class="px-3.5 py-2 rounded-xl bg-dulce-darkRose hover:bg-rose-700 text-white font-bold text-xs transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-right-from-bracket"></i> Volver a Tienda
+                </button>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN PESTAÑAS ADMIN -->
+        <div class="flex items-center gap-2 border-b border-dulce-pink/30 pb-2 overflow-x-auto no-scrollbar text-xs font-bold">
+            <button onclick="switchAdminTab('pedidos')" id="admin-tab-btn-pedidos" class="px-4 py-2.5 rounded-2xl bg-dulce-chocolate text-white shadow-sm flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-list-check text-dulce-pink"></i> Pedidos Recibidos
+            </button>
+            <button onclick="switchAdminTab('postre')" id="admin-tab-btn-postre" class="px-4 py-2.5 rounded-2xl bg-white text-dulce-chocolate hover:bg-dulce-rose flex items-center gap-2 shrink-0 border border-dulce-pink/30">
+                <i class="fa-solid fa-star text-dulce-deepPink"></i> Postre del Día
+            </button>
+            <button onclick="switchAdminTab('tortas')" id="admin-tab-btn-tortas" class="px-4 py-2.5 rounded-2xl bg-white text-dulce-chocolate hover:bg-dulce-rose flex items-center gap-2 shrink-0 border border-dulce-pink/30">
+                <i class="fa-solid fa-birthday-cake text-dulce-deepPink"></i> Gestión de Tortas
+            </button>
+            <button onclick="switchAdminTab('sabores')" id="admin-tab-btn-sabores" class="px-4 py-2.5 rounded-2xl bg-white text-dulce-chocolate hover:bg-dulce-rose flex items-center gap-2 shrink-0 border border-dulce-pink/30">
+                <i class="fa-solid fa-wand-magic-sparkles text-dulce-deepPink"></i> Sabores & Rellenos
+            </button>
+        </div>
+
+        <!-- PESTAÑA 1: PEDIDOS RECIBIDOS (PRINCIPAL) -->
+        <section id="admin-view-tab-pedidos" class="bg-white rounded-3xl border border-dulce-pink/40 shadow-md p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-dulce-pink/20 pb-3">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-serif text-lg font-bold text-dulce-chocolate">
+                        <i class="fa-solid fa-list-check text-dulce-deepPink"></i> Pedidos Recibidos
+                    </h3>
+                    <span id="admin-orders-count-badge" class="bg-dulce-rose text-dulce-darkRose text-xs font-black px-2.5 py-0.5 rounded-full border border-dulce-pink">0</span>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs">
+                    <button onclick="filterAdminOrders('todos')" id="filter-btn-todos" class="px-3 py-1.5 rounded-xl font-bold bg-dulce-chocolate text-white">Todos</button>
+                    <button onclick="filterAdminOrders('Pendiente')" id="filter-btn-Pendiente" class="px-3 py-1.5 rounded-xl font-bold bg-amber-100 text-amber-800">Pendientes</button>
+                    <button onclick="filterAdminOrders('En camino')" id="filter-btn-En camino" class="px-3 py-1.5 rounded-xl font-bold bg-blue-100 text-blue-800">En Camino</button>
+                    <button onclick="filterAdminOrders('Entregado')" id="filter-btn-Entregado" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-100 text-emerald-800">Entregados</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-dulce-warmCream text-dulce-chocolate uppercase font-bold border-b border-dulce-pink/20">
+                        <tr>
+                            <th class="p-3">Ref ID</th>
+                            <th class="p-3">Tipo</th>
+                            <th class="p-3">Cliente / Celular</th>
+                            <th class="p-3">Dirección & Referencia</th>
+                            <th class="p-3">Detalle Pedido</th>
+                            <th class="p-3">Pago</th>
+                            <th class="p-3">Total</th>
+                            <th class="p-3 text-center">Estado / Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-table-rows" class="divide-y divide-neutral-100">
+                        <!-- Inyección dinámica -->
+                    </tbody>
+                </table>
+
+                <div id="admin-empty-orders-msg" class="text-center py-10 text-neutral-400 hidden">
+                    <i class="fa-solid fa-box-open text-3xl mb-2 text-dulce-pink"></i>
+                    <p class="text-xs">No hay pedidos registrados en esta sección.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 2: CONFIGURACIÓN POSTRE DEL DÍA -->
+        <section id="admin-view-tab-postre" class="hidden bg-white rounded-3xl border border-dulce-pink/40 shadow-md p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-dulce-pink/20 pb-3">
+                <h3 class="font-serif text-lg font-bold text-dulce-chocolate flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-dulce-deepPink"></i> Configurar Postre del Día
+                </h3>
+
+                <label class="inline-flex items-center cursor-pointer gap-2">
+                    <span class="text-xs font-extrabold text-dulce-chocolate">Venta Activa:</span>
+                    <input type="checkbox" id="admin-postre-active-toggle" onchange="togglePostreActiveState()" class="sr-only peer">
+                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-bold text-neutral-500 mb-1">Nombre del Postre</label>
+                    <input type="text" id="admin-postre-name" placeholder="Ej: Cheesecake Frutos Rojos" class="w-full bg-dulce-warmCream border border-dulce-pink/30 p-2.5 rounded-xl font-bold">
+                </div>
+                <div>
+                    <label class="block font-bold text-neutral-500 mb-1">Precio por Porción ($)</label>
+                    <input type="number" id="admin-postre-price" placeholder="12000" class="w-full bg-dulce-warmCream border border-dulce-pink/30 p-2.5 rounded-xl font-bold">
+                </div>
+                <div>
+                    <label class="block font-bold text-neutral-500 mb-1">Porciones Disponibles (Stock)</label>
+                    <input type="number" id="admin-postre-stock" placeholder="50" class="w-full bg-dulce-warmCream border border-dulce-pink/30 p-2.5 rounded-xl font-black text-dulce-darkRose">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="md:col-span-2">
+                    <label class="block font-bold text-neutral-500 mb-1">Descripción del Postre</label>
+                    <input type="text" id="admin-postre-desc" placeholder="Ingredientes, acompañamiento..." class="w-full bg-dulce-warmCream border border-dulce-pink/30 p-2.5 rounded-xl font-medium">
+                </div>
+                <div>
+                    <label class="block font-bold text-neutral-500 mb-1">Cargar Foto / Flyer desde Celular o URL</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-postre-img" placeholder="URL Imagen https://..." class="w-full bg-dulce-warmCream border border-dulce-pink/30 p-2.5 rounded-xl font-medium text-xs">
+                        <label class="px-3 py-2.5 bg-dulce-pink text-dulce-chocolate hover:bg-dulce-rose rounded-xl font-bold cursor-pointer shrink-0 flex items-center justify-center border border-dulce-pink">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" id="admin-postre-file" accept="image/*" onchange="handlePostreFileUpload(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="saveAdminDailyDessertSettings()" class="bg-dulce-chocolate hover:bg-black text-white font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md transition">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Cambios de Postre
+                </button>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 3: GESTIÓN Y CONFIGURACIÓN DE TORTAS -->
+        <section id="admin-view-tab-tortas" class="hidden bg-white rounded-3xl border border-dulce-pink/40 shadow-md p-6 space-y-6">
+            <div class="flex items-center justify-between border-b border-dulce-pink/20 pb-3">
+                <div>
+                    <h3 class="font-serif text-lg font-bold text-dulce-chocolate flex items-center gap-2">
+                        <i class="fa-solid fa-birthday-cake text-dulce-deepPink"></i> Editar o Agregar Tortas a la Galería
+                    </h3>
+                    <p class="text-xs text-neutral-500">Configura nombre, fotos, concepto y precio por porción de cada torta.</p>
+                </div>
+                <button onclick="resetCakeAdminForm()" class="bg-dulce-rose text-dulce-chocolate hover:bg-dulce-pink font-bold px-3.5 py-2 rounded-xl text-xs border border-dulce-pink transition">
+                    + Nueva Torta
+                </button>
+            </div>
+
+            <form onsubmit="saveAdminCake(event)" class="bg-dulce-warmCream p-5 rounded-2xl border border-dulce-pink/30 space-y-4 text-xs">
+                <input type="hidden" id="admin-cake-edit-id" value="">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block font-bold text-neutral-500 mb-1">Nombre / Título de Torta *</label>
+                        <input type="text" id="admin-cake-title" required placeholder="Ej. Torta Semidesnuda con Fresas" class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-neutral-500 mb-1">Precio Base por Persona / Porción ($) *</label>
+                        <input type="number" id="admin-cake-price-person" required placeholder="Ej. 6000" class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-bold text-dulce-darkRose">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-neutral-500 mb-1">Imagen de la Torta (Celular o URL) *</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="admin-cake-img" required placeholder="https://..." class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-medium text-xs">
+                            <label class="px-3 py-2.5 bg-dulce-pink text-dulce-chocolate hover:bg-dulce-rose rounded-xl font-bold cursor-pointer shrink-0 flex items-center justify-center border border-dulce-pink">
+                                <i class="fa-solid fa-camera"></i>
+                                <input type="file" id="admin-cake-file" accept="image/*" onchange="handleCakeFileUpload(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-neutral-500 mb-1">Concepto / Descripción Fina *</label>
+                    <input type="text" id="admin-cake-desc" required placeholder="Ej. Elegante diseño Naked Cake decorado con flores naturales..." class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-medium">
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="resetCakeAdminForm()" class="px-4 py-2 rounded-xl bg-neutral-200 text-neutral-700 font-bold">Limpiar</button>
+                    <button type="submit" class="bg-dulce-chocolate hover:bg-black text-white font-extrabold px-6 py-2 rounded-xl shadow-md">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Torta en Galería
+                    </button>
+                </div>
+            </form>
+
+            <div class="space-y-3">
+                <h4 class="font-serif font-bold text-sm text-dulce-chocolate border-b border-dulce-pink/20 pb-2">Tortas Activas en el Catálogo</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="admin-cakes-list-grid">
+                    <!-- Se inyectan dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 4: CONFIGURACIÓN SABORES Y RELLENOS -->
+        <section id="admin-view-tab-sabores" class="hidden bg-white rounded-3xl border border-dulce-pink/40 shadow-md p-6 space-y-6">
+            <div class="border-b border-dulce-pink/20 pb-3">
+                <h3 class="font-serif text-lg font-bold text-dulce-chocolate flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-dulce-deepPink"></i> Opciones de Bizcochos y Rellenos
+                </h3>
+                <p class="text-xs text-neutral-500">Agrega o elimina los sabores disponibles que ven tus clientes al pedir una torta.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                <div class="bg-dulce-warmCream p-5 rounded-2xl border border-dulce-pink/30 space-y-4">
+                    <h4 class="font-serif font-bold text-sm text-dulce-chocolate flex items-center justify-between">
+                        <span>Sabores de Bizcocho</span>
+                        <span id="flavor-count-badge" class="bg-dulce-pink text-dulce-chocolate px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </h4>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-new-flavor-input" placeholder="Ej. Chocolate Amargo Gourmet" class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-semibold outline-none">
+                        <button onclick="addNewFlavor()" class="bg-dulce-chocolate hover:bg-black text-white font-bold px-4 py-2.5 rounded-xl shrink-0">
+                            + Agregar
+                        </button>
+                    </div>
+
+                    <ul id="admin-flavors-list" class="space-y-2 max-h-60 overflow-y-auto">
+                        <!-- Dinámico -->
+                    </ul>
+                </div>
+
+                <div class="bg-dulce-warmCream p-5 rounded-2xl border border-dulce-pink/30 space-y-4">
+                    <h4 class="font-serif font-bold text-sm text-dulce-chocolate flex items-center justify-between">
+                        <span>Rellenos Especiales</span>
+                        <span id="filling-count-badge" class="bg-dulce-pink text-dulce-chocolate px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </h4>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-new-filling-input" placeholder="Ej. Maracuyá Silvestre" class="w-full bg-white border border-dulce-pink/40 p-2.5 rounded-xl font-semibold outline-none">
+                        <button onclick="addNewFilling()" class="bg-dulce-chocolate hover:bg-black text-white font-bold px-4 py-2.5 rounded-xl shrink-0">
+                            + Agregar
+                        </button>
+                    </div>
+
+                    <ul id="admin-fillings-list" class="space-y-2 max-h-60 overflow-y-auto">
+                        <!-- Dinámico -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-dulce-pink/30 py-6 mt-12 text-center text-xs text-neutral-500">
+        <div class="max-w-5xl mx-auto px-4 space-y-2">
+            <p class="font-serif font-bold text-dulce-chocolate text-sm">
+                Jessica V - Dulce Bocado © 2026
+            </p>
+            <p class="text-[11px] font-light">
+                Repostería fina, postres de autor y tortas personalizadas para tus mejores celebraciones.
+            </p>
+        </div>
+    </footer>
+
+    <div id="order-success-modal" class="fixed inset-0 z-[200] bg-dulce-chocolate/75 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white max-w-md w-full rounded-3xl p-6 md:p-8 shadow-2xl border border-dulce-pink/30 transform scale-95 transition-transform duration-300 text-center flex flex-col items-center">
+            
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mb-4 shadow-inner">
+                <i class="fa-solid fa-circle-check animate-bounce"></i>
+            </div>
+
+            <span class="text-[10px] font-black uppercase tracking-widest text-dulce-deepPink bg-dulce-rose px-3 py-1 rounded-full mb-2">
+                ¡Pedido Registrado con Éxito!
+            </span>
+
+            <h3 class="font-serif text-2xl font-bold text-dulce-chocolate mb-2">
+                ¡Gracias por tu compra!
+            </h3>
+
+            <p class="text-xs text-neutral-600 mb-6 leading-relaxed">
+                Tu orden <strong id="modal-order-id" class="text-dulce-chocolate">#0000</strong> ha sido guardada en la cocina de Jessica V. <br>
+                <span class="font-bold text-dulce-darkRose">En poco tiempo procesaremos y entregaremos tu pedido. Por favor espera nuestra comunicación vía WhatsApp.</span>
+            </p>
+
+            <div class="w-full bg-dulce-warmCream p-4 rounded-2xl border border-dulce-pink/30 text-left text-xs mb-6 space-y-2">
+                <div class="flex justify-between border-b border-dulce-pink/20 pb-1 font-bold">
+                    <span>Producto:</span>
+                    <span id="modal-item-name" class="text-dulce-chocolate">---</span>
+                </div>
+                <div class="flex justify-between border-b border-dulce-pink/20 pb-1 font-bold">
+                    <span>Cliente:</span>
+                    <span id="modal-cust-name" class="text-dulce-chocolate">---</span>
+                </div>
+                <div class="flex justify-between font-extrabold text-sm text-dulce-darkRose pt-1">
+                    <span>Total a Pagar:</span>
+                    <span id="modal-total-pay">$0</span>
+                </div>
+            </div>
+
+            <div class="w-full space-y-2">
+                <a id="modal-whatsapp-direct-btn" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Comprobante / Hablar por WhatsApp
+                </a>
+
+                <button onclick="closeSuccessModal()" class="w-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold py-3 px-4 rounded-2xl text-xs transition">
+                    Cerrar e ir al Menú
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-auth-modal" class="fixed inset-0 z-[250] bg-dulce-chocolate/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white max-w-xs w-full rounded-3xl p-6 shadow-2xl border border-dulce-pink/30 text-center transform scale-95 transition-transform duration-300">
+            <div class="w-12 h-12 bg-dulce-rose text-dulce-chocolate rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="font-serif text-lg font-bold text-dulce-chocolate mb-1">Acceso Jessica V</h3>
+            <p class="text-[11px] text-neutral-400 mb-4">Ingresa el PIN para administrar pedidos</p>
+
+            <form onsubmit="verifyAdminPIN(event)" class="space-y-3">
+                <input type="password" id="admin-pin-input" required maxlength="4" placeholder="••••" class="w-full bg-dulce-warmCream border border-dulce-pink/40 py-3 text-center text-xl font-black tracking-widest text-dulce-chocolate rounded-xl outline-none focus:ring-2 focus:ring-dulce-pink">
+                
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminAuthModal()" class="flex-1 bg-neutral-100 text-neutral-600 py-2.5 rounded-xl font-bold text-xs">Cancelar</button>
+                    <button type="submit" class="flex-1 bg-dulce-chocolate text-white py-2.5 rounded-xl font-bold text-xs shadow-md">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const DB_KEY = "JESSICAV_DULCEBOCADO_V1_";
+        const JESSICA_WHATSAPP_NUMBER = "573102881717";
+        const URL_API = 'https://script.google.com/macros/s/AKfycbwMp_47jLmQVh0oPFHWEO5AV4ZYEYRVH9ohtln4sfQZSMzh8YnB-hExmTQem6IMQ835/exec';
+
+        let state = {
+            adminPIN: "1234",
+            postreActive: true,
+            postreName: "Cheesecake de Frutos Rojos",
+            postreDesc: "Suave base de galleta con crema artesanal de mascarpone y cobertura abundante de compota natural de frutos del bosque.",
+            postrePrice: 12000,
+            postreStock: 50,
+            postreImg: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=800",
+            cakes: [
+                {
+                    id: "CAKE-1",
+                    title: "Torta Semidesnuda de Rosas & Fresas",
+                    desc: "Elegante diseño estilo Naked Cake decorado con flores naturales, fresas frescas y macarrons pastel.",
+                    basePricePerPerson: 6000,
+                    img: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600"
+                },
+                {
+                    id: "CAKE-2",
+                    title: "Torta Corona de Chocolate Gourmet",
+                    desc: "Rica cobertura de ganache de chocolate, bombones artesanales y detalles dorados en azúcar.",
+                    basePricePerPerson: 6500,
+                    img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600"
+                },
+                {
+                    id: "CAKE-3",
+                    title: "Torta Infantil Fantasía & Colores",
+                    desc: "Decoración colorida en crema chantilly o fondant suave ideal para cumpleaños inolvidables.",
+                    basePricePerPerson: 5500,
+                    img: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600"
+                }
+            ],
+            cakeFlavors: [
+                "Vainilla Fina con Toque de Ron",
+                "Chocolate Suave Húmedo",
+                "Red Velvet Especial Jessica V",
+                "Naranja Natural con Amaretto"
+            ],
+            cakeFillings: [
+                "Arequipe de Leche Criollo",
+                "Compota de Frutos Rojos",
+                "Crema Suave de Nutella",
+                "Ganache de Chocolate Blanco"
+            ],
+            orders: []
+        };
+
+        let currentDessertQty = 1;
+        let selectedCakeId = "CAKE-1";
+        let activeFilter = 'todos';
+        let currentAdminTab = 'pedidos';
+
+        // ALTERNAR BOTONES DEL ENCABEZADO
+        function toggleHeaderActions(e) {
+            if(e) e.preventDefault();
+            const container = document.getElementById('header-quick-actions');
+            if(container) {
+                container.classList.toggle('hidden');
+            }
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if(!container) return;
+            const toast = document.createElement('div');
+            let bg = 'bg-dulce-chocolate text-white border-dulce-pink/30';
+            if (type === 'success') bg = 'bg-emerald-600 text-white border-emerald-400';
+            if (type === 'error') bg = 'bg-rose-600 text-white border-rose-400';
+
+            toast.className = `mx-auto px-5 py-3 rounded-2xl text-xs font-bold shadow-2xl transform transition-all duration-300 -translate-y-10 opacity-0 flex items-center justify-center gap-2 ${bg} border pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid fa-cake-candles text-dulce-pink"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => { toast.classList.remove('-translate-y-10', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('-translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function initApp() {
+            loadStateFromStorage();
+            renderPublicView();
+            renderCakesCatalog();
+            renderFlavorsAndFillingsSelects();
+            recalculateCakePrice();
+            
+            // Sincronizar en segundo plano con la API de Google Sheets
+            loadDataFromCloud();
+        }
+
+        async function loadDataFromCloud() {
+            if(!URL_API || URL_API.includes("REEMPLAZAR")) return;
+            try {
+                const res = await fetch(URL_API);
+                const json = await res.json();
+                if(json.status === 'success' && json.data) {
+                    const d = json.data;
+                    if(d.postreConfig && d.postreConfig.postreName) {
+                        state.postreActive = Boolean(d.postreConfig.postreActive);
+                        state.postreName = d.postreConfig.postreName;
+                        state.postrePrice = Number(d.postreConfig.postrePrice);
+                        state.postreStock = Number(d.postreConfig.postreStock);
+                        state.postreDesc = d.postreConfig.postreDesc;
+                        state.postreImg = d.postreConfig.postreImg;
+                    }
+                    if(d.cakes && d.cakes.length > 0) state.cakes = d.cakes;
+                    if(d.cakeFlavors && d.cakeFlavors.length > 0) state.cakeFlavors = d.cakeFlavors;
+                    if(d.cakeFillings && d.cakeFillings.length > 0) state.cakeFillings = d.cakeFillings;
+                    if(d.orders && d.orders.length > 0) state.orders = d.orders;
+                    
+                    saveStateToStorage();
+                    renderPublicView();
+                    renderCakesCatalog();
+                    renderFlavorsAndFillingsSelects();
+                    recalculateCakePrice();
+
+                    if(document.getElementById('admin-view') && !document.getElementById('admin-view').classList.contains('hidden')) {
+                        renderAdminOrdersTable();
+                        renderAdminCakesList();
+                        renderAdminFlavorsAndFillings();
+                        populateAdminControls();
+                    }
+                }
+            } catch(e) {
+                console.warn("Sincronización en segundo plano offline.", e);
+            }
+        }
+
+        async function syncWithCloud(action, payload) {
+            if(!URL_API || URL_API.includes("REEMPLAZAR")) return;
+            try {
+                await fetch(URL_API, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: action, data: payload })
+                });
+            } catch(e) {
+                console.warn("Guardado reservado en almacenamiento local.", e);
+            }
+        }
+
+        function loadStateFromStorage() {
+            const saved = localStorage.getItem(DB_KEY + "config");
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    state = { ...state, ...parsed };
+                } catch(e) {
+                    console.error("Error cargando memoria local", e);
+                }
+            }
+
+            const savedOrders = localStorage.getItem(DB_KEY + "orders");
+            if (savedOrders) {
+                try {
+                    state.orders = JSON.parse(savedOrders);
+                } catch(e){}
+            }
+        }
+
+        function saveStateToStorage() {
+            localStorage.setItem(DB_KEY + "config", JSON.stringify({
+                postreActive: state.postreActive,
+                postreName: state.postreName,
+                postreDesc: state.postreDesc,
+                postrePrice: state.postrePrice,
+                postreStock: state.postreStock,
+                postreImg: state.postreImg,
+                cakes: state.cakes,
+                cakeFlavors: state.cakeFlavors,
+                cakeFillings: state.cakeFillings
+            }));
+            localStorage.setItem(DB_KEY + "orders", JSON.stringify(state.orders));
+        }
+
+        function renderPublicView() {
+            const activeCard = document.getElementById('postre-active-card');
+            const soldoutCard = document.getElementById('postre-soldout-card');
+
+            if (state.postreActive && state.postreStock > 0) {
+                activeCard.classList.remove('hidden');
+                soldoutCard.classList.add('hidden');
+
+                document.getElementById('postre-title-val').innerText = state.postreName;
+                document.getElementById('postre-desc-val').innerText = state.postreDesc;
+                document.getElementById('postre-price-tag').innerText = `$${state.postrePrice.toLocaleString()}`;
+                document.getElementById('postre-img-val').src = state.postreImg;
+                document.getElementById('hero-display-img').src = state.postreImg;
+                
+                document.getElementById('postre-stock-counter').innerText = `${state.postreStock} porciones disponibles`;
+                
+                if(currentDessertQty > state.postreStock) {
+                    currentDessertQty = state.postreStock;
+                }
+                document.getElementById('postre-qty-display').innerText = currentDessertQty;
+                updatePostreTotalLabel();
+            } else {
+                activeCard.classList.add('hidden');
+                soldoutCard.classList.remove('hidden');
+            }
+        }
+
+        function renderFlavorsAndFillingsSelects() {
+            const flavorSelect = document.getElementById('cake-flavor-select');
+            const fillingSelect = document.getElementById('cake-filling-select');
+
+            if (flavorSelect && state.cakeFlavors) {
+                flavorSelect.innerHTML = state.cakeFlavors.map(f => `<option value="${f}">${f}</option>`).join('');
+            }
+
+            if (fillingSelect && state.cakeFillings) {
+                fillingSelect.innerHTML = state.cakeFillings.map(f => `<option value="${f}">${f}</option>`).join('');
+            }
+        }
+
+        function changeDessertQty(delta) {
+            const newQty = currentDessertQty + delta;
+            if (newQty >= 1 && newQty <= state.postreStock) {
+                currentDessertQty = newQty;
+                document.getElementById('postre-qty-display').innerText = currentDessertQty;
+                updatePostreTotalLabel();
+            } else if (newQty > state.postreStock) {
+                showToast(`Solo quedan ${state.postreStock} porciones disponibles de este postre.`, 'info');
+            }
+        }
+
+        function updatePostreTotalLabel() {
+            const total = currentDessertQty * state.postrePrice;
+            document.getElementById('postre-order-total-lbl').innerText = `$${total.toLocaleString()}`;
+        }
+
+        function toggleCashField(method, type) {
+            const container = document.getElementById(type === 'postre' ? 'postre-cash-note-container' : 'cake-cash-note-container');
+            if (method === 'Efectivo') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function renderCakesCatalog() {
+            const container = document.getElementById('cakes-catalog-grid');
+            if(!container) return;
+            container.innerHTML = '';
+
+            state.cakes.forEach(cake => {
+                const isSelected = cake.id === selectedCakeId;
+                container.innerHTML += `
+                    <div onclick="selectCake('${cake.id}')" class="bg-white rounded-3xl overflow-hidden border ${isSelected ? 'border-dulce-darkRose ring-2 ring-dulce-pink shadow-xl' : 'border-dulce-pink/30 hover:border-dulce-pink'} p-2.5 md:p-3 flex flex-col justify-between transition cursor-pointer group">
+                        <div>
+                            <div class="relative h-32 sm:h-48 rounded-2xl overflow-hidden mb-2 md:mb-3">
+                                <img src="${cake.img}" alt="${cake.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                ${isSelected ? '<span class="absolute top-2 right-2 bg-dulce-darkRose text-white text-[8px] md:text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md">✓ Lista</span>' : ''}
+                            </div>
+                            <h4 class="font-serif font-bold text-xs sm:text-base text-dulce-chocolate mb-1 line-clamp-2">${cake.title}</h4>
+                            <p class="text-[10px] sm:text-xs text-neutral-500 line-clamp-2 font-light">${cake.desc}</p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-dulce-pink/20 flex items-center justify-between">
+                            <span class="text-[9px] sm:text-[10px] text-neutral-400 font-bold uppercase">Desde $${(cake.basePricePerPerson * 10).toLocaleString()}</span>
+                            <span class="text-[10px] sm:text-xs font-extrabold text-dulce-darkRose group-hover:translate-x-1 transition">Cotizar →</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectCake(cakeId) {
+            selectedCakeId = cakeId;
+            const cake = state.cakes.find(c => c.id === cakeId);
+            if(cake) {
+                document.getElementById('selected-cake-title-display').innerText = cake.title;
+                document.getElementById('cake-selected-id').value = cake.id;
+            }
+            renderCakesCatalog();
+            recalculateCakePrice();
+
+            document.getElementById('cake-order-box').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function recalculateCakePrice() {
+            const cake = state.cakes.find(c => c.id === selectedCakeId) || state.cakes[0];
+            const portions = parseInt(document.getElementById('cake-portions-select').value) || 15;
+            const calculatedTotal = cake.basePricePerPerson * portions;
+
+            document.getElementById('cake-calculated-price').innerText = `$${calculatedTotal.toLocaleString()}`;
+        }
+
+        function submitDailyDessertOrder(e) {
+            e.preventDefault();
+
+            if (!state.postreActive || state.postreStock < currentDessertQty) {
+                showToast("Lo sentimos, no hay suficiente stock de postres.", "error");
+                return;
+            }
+
+            const name = document.getElementById('postre-cust-name').value.trim();
+            const phone = document.getElementById('postre-cust-phone').value.trim();
+            const address = document.getElementById('postre-cust-address').value.trim();
+            const specs = document.getElementById('postre-cust-specs').value.trim();
+            const payment = document.getElementById('postre-cust-payment').value;
+            const cashNote = document.getElementById('postre-cash-note').value.trim();
+
+            if (payment === 'Efectivo' && !cashNote) {
+                showToast("Ingresa con cuánto billete vas a pagar para llevar vueltas.", "error");
+                return;
+            }
+
+            const orderId = "POSTRE-" + Math.floor(1000 + Math.random() * 9000);
+            const totalPay = currentDessertQty * state.postrePrice;
+
+            const newOrder = {
+                id: orderId,
+                type: "Postre del Día",
+                date: new Date().toLocaleString(),
+                itemTitle: `${currentDessertQty}x ${state.postreName}`,
+                qty: currentDessertQty,
+                clientName: name,
+                clientPhone: phone,
+                address: `${address} (${specs})`,
+                payment: payment + (cashNote ? ` [Paga con: ${cashNote}]` : ''),
+                total: totalPay,
+                status: "Pendiente"
+            };
+
+            state.postreStock -= currentDessertQty;
+            state.orders.unshift(newOrder);
+
+            saveStateToStorage();
+            syncWithCloud("CREATE_ORDER", newOrder);
+            renderPublicView();
+
+            document.getElementById('postre-cust-name').value = '';
+            document.getElementById('postre-cust-phone').value = '';
+            document.getElementById('postre-cust-address').value = '';
+            document.getElementById('postre-cust-specs').value = '';
+            document.getElementById('postre-cash-note').value = '';
+
+            showOrderSuccessModal(newOrder);
+        }
+
+        function submitCakeOrder(e) {
+            e.preventDefault();
+
+            const cake = state.cakes.find(c => c.id === selectedCakeId) || state.cakes[0];
+            const portions = document.getElementById('cake-portions-select').value;
+            const flavor = document.getElementById('cake-flavor-select').value;
+            const filling = document.getElementById('cake-filling-select').value;
+            const dateEvent = document.getElementById('cake-event-date').value;
+            const customMessage = document.getElementById('cake-custom-message').value.trim();
+
+            const name = document.getElementById('cake-cust-name').value.trim();
+            const phone = document.getElementById('cake-cust-phone').value.trim();
+            const address = document.getElementById('cake-cust-address').value.trim();
+            const specs = document.getElementById('cake-cust-specs').value.trim();
+            const payment = document.getElementById('cake-cust-payment').value;
+            const cashNote = document.getElementById('cake-cash-note').value.trim();
+
+            if (!dateEvent) {
+                showToast("Por favor selecciona la fecha de tu evento.", "error");
+                return;
+            }
+
+            if (payment === 'Efectivo' && !cashNote) {
+                showToast("Ingresa con cuánto billete vas a pagar.", "error");
+                return;
+            }
+
+            const calculatedTotal = cake.basePricePerPerson * parseInt(portions);
+            const orderId = "TORTA-" + Math.floor(1000 + Math.random() * 9000);
+
+            const detailString = `${cake.title} (${portions} pers) | Bizcocho: ${flavor} | Relleno: ${filling} | Fecha Evento: ${dateEvent}` + (customMessage ? ` | Letrero: "${customMessage}"` : '');
+
+            const newOrder = {
+                id: orderId,
+                type: "Torta Especial",
+                date: new Date().toLocaleString(),
+                itemTitle: detailString,
+                qty: 1,
+                clientName: name,
+                clientPhone: phone,
+                address: `${address} (${specs})`,
+                payment: payment + (cashNote ? ` [Paga con: ${cashNote}]` : ''),
+                total: calculatedTotal,
+                status: "Pendiente"
+            };
+
+            state.orders.unshift(newOrder);
+            saveStateToStorage();
+            syncWithCloud("CREATE_ORDER", newOrder);
+
+            document.getElementById('cake-cust-name').value = '';
+            document.getElementById('cake-cust-phone').value = '';
+            document.getElementById('cake-cust-address').value = '';
+            document.getElementById('cake-cust-specs').value = '';
+            document.getElementById('cake-custom-message').value = '';
+            document.getElementById('cake-cash-note').value = '';
+
+            showOrderSuccessModal(newOrder);
+        }
+
+        function showOrderSuccessModal(order) {
+            document.getElementById('modal-order-id').innerText = `#${order.id}`;
+            document.getElementById('modal-item-name').innerText = order.itemTitle;
+            document.getElementById('modal-cust-name').innerText = order.clientName;
+            document.getElementById('modal-total-pay').innerText = `$${order.total.toLocaleString()}`;
+
+            let waMsg = `🍰 *NUEVO PEDIDO - JESSICA V DULCE BOCADO*\n`;
+            waMsg += `------------------------------------\n`;
+            waMsg += `*ID Orden:* #${order.id}\n`;
+            waMsg += `*Cliente:* ${order.clientName}\n`;
+            waMsg += `*Teléfono:* ${order.clientPhone}\n`;
+            waMsg += `*Dirección:* ${order.address}\n`;
+            waMsg += `------------------------------------\n`;
+            waMsg += `*Detalle:* ${order.itemTitle}\n`;
+            waMsg += `*Pago:* ${order.payment}\n`;
+            waMsg += `*Total:* $${order.total.toLocaleString()}\n`;
+            waMsg += `------------------------------------\n`;
+            waMsg += `_Por favor confirma la entrega de mi pedido. Gracias!_`;
+
+            const waUrl = `https://wa.me/${JESSICA_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+            document.getElementById('modal-whatsapp-direct-btn').href = waUrl;
+
+            const modal = document.getElementById('order-success-modal');
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                const card = modal.querySelector('.transform');
+                if (card) {
+                    card.classList.remove('scale-95');
+                    card.classList.add('scale-100');
+                }
+            }
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('order-success-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                const card = modal.querySelector('.transform');
+                if (card) {
+                    card.classList.remove('scale-100');
+                    card.classList.add('scale-95');
+                }
+            }
+        }
+
+        function openAdminAuthModal() {
+            const modal = document.getElementById('admin-auth-modal');
+            const pinInput = document.getElementById('admin-pin-input');
+            if (pinInput) pinInput.value = '';
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                const card = modal.querySelector('.transform');
+                if (card) {
+                    card.classList.remove('scale-95');
+                    card.classList.add('scale-100');
+                }
+            }
+        }
+
+        function closeAdminAuthModal() {
+            const modal = document.getElementById('admin-auth-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                const card = modal.querySelector('.transform');
+                if (card) {
+                    card.classList.remove('scale-100');
+                    card.classList.add('scale-95');
+                }
+            }
+        }
+
+        function verifyAdminPIN(e) {
+            e.preventDefault();
+            const inputPIN = document.getElementById('admin-pin-input').value.trim();
+
+            if (inputPIN === state.adminPIN) {
+                closeAdminAuthModal();
+                showSection('admin');
+                switchAdminTab('pedidos');
+                populateAdminControls();
+                renderAdminOrdersTable();
+                renderAdminCakesList();
+                renderAdminFlavorsAndFillings();
+                showToast("Acceso correcto a panel de Jessica V", "success");
+            } else {
+                showToast("PIN de seguridad incorrecto.", "error");
+            }
+        }
+
+        function showSection(section) {
+            if (section === 'admin') {
+                document.getElementById('public-view').classList.add('hidden');
+                document.getElementById('admin-view').classList.remove('hidden');
+                document.getElementById('admin-toggle-text').innerText = "Ver Tienda";
+            } else {
+                document.getElementById('public-view').classList.remove('hidden');
+                document.getElementById('admin-view').classList.add('hidden');
+                document.getElementById('admin-toggle-text').innerText = "Panel Jessica";
+            }
+        }
+
+        function switchAdminTab(tab) {
+            currentAdminTab = tab;
+            ['pedidos', 'postre', 'tortas', 'sabores'].forEach(t => {
+                const tabEl = document.getElementById(`admin-view-tab-${t}`);
+                const btnEl = document.getElementById(`admin-tab-btn-${t}`);
+                if (tabEl && btnEl) {
+                    if (t === tab) {
+                        tabEl.classList.remove('hidden');
+                        btnEl.className = "px-4 py-2.5 rounded-2xl bg-dulce-chocolate text-white shadow-sm flex items-center gap-2 shrink-0";
+                    } else {
+                        tabEl.classList.add('hidden');
+                        btnEl.className = "px-4 py-2.5 rounded-2xl bg-white text-dulce-chocolate hover:bg-dulce-rose flex items-center gap-2 shrink-0 border border-dulce-pink/30";
+                    }
+                }
+            });
+        }
+
+        function exitAdminView() {
+            showSection('public');
+            renderPublicView();
+        }
+
+        function populateAdminControls() {
+            document.getElementById('admin-postre-active-toggle').checked = state.postreActive;
+            document.getElementById('admin-postre-name').value = state.postreName;
+            document.getElementById('admin-postre-price').value = state.postrePrice;
+            document.getElementById('admin-postre-stock').value = state.postreStock;
+            document.getElementById('admin-postre-desc').value = state.postreDesc;
+            document.getElementById('admin-postre-img').value = state.postreImg;
+        }
+
+        function handlePostreFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('admin-postre-img').value = evt.target.result;
+                showToast("Foto de postre cargada correctamente.", "success");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleCakeFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('admin-cake-img').value = evt.target.result;
+                showToast("Foto de torta cargada correctamente.", "success");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function togglePostreActiveState() {
+            state.postreActive = document.getElementById('admin-postre-active-toggle').checked;
+            saveStateToStorage();
+            syncWithCloud("SAVE_POSTRE_CONFIG", {
+                postreActive: state.postreActive,
+                postreName: state.postreName,
+                postrePrice: state.postrePrice,
+                postreStock: state.postreStock,
+                postreDesc: state.postreDesc,
+                postreImg: state.postreImg
+            });
+            showToast(`Venta de postre del día ${state.postreActive ? 'ACTIVADA' : 'PAUSADA'}.`, "info");
+        }
+
+        function saveAdminDailyDessertSettings() {
+            state.postreActive = document.getElementById('admin-postre-active-toggle').checked;
+            state.postreName = document.getElementById('admin-postre-name').value.trim() || "Postre del Día";
+            state.postrePrice = parseInt(document.getElementById('admin-postre-price').value) || 10000;
+            state.postreStock = parseInt(document.getElementById('admin-postre-stock').value) || 0;
+            state.postreDesc = document.getElementById('admin-postre-desc').value.trim();
+            state.postreImg = document.getElementById('admin-postre-img').value.trim() || "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=800";
+
+            saveStateToStorage();
+            syncWithCloud("SAVE_POSTRE_CONFIG", {
+                postreActive: state.postreActive,
+                postreName: state.postreName,
+                postrePrice: state.postrePrice,
+                postreStock: state.postreStock,
+                postreDesc: state.postreDesc,
+                postreImg: state.postreImg
+            });
+            showToast("Ajustes del postre actualizados.", "success");
+        }
+
+        function renderAdminCakesList() {
+            const container = document.getElementById('admin-cakes-list-grid');
+            if(!container) return;
+            container.innerHTML = '';
+
+            state.cakes.forEach(cake => {
+                container.innerHTML += `
+                    <div class="bg-dulce-warmCream border border-dulce-pink/30 p-3 rounded-2xl flex flex-col justify-between text-xs space-y-2">
+                        <div class="space-y-1">
+                            <img src="${cake.img}" class="w-full h-28 object-cover rounded-xl mb-2">
+                            <h5 class="font-serif font-bold text-sm text-dulce-chocolate">${cake.title}</h5>
+                            <p class="text-[10px] text-neutral-500 line-clamp-2">${cake.desc}</p>
+                            <p class="font-black text-dulce-darkRose text-xs">$${cake.basePricePerPerson.toLocaleString()} / porción</p>
+                        </div>
+                        <div class="flex items-center gap-2 pt-2 border-t border-dulce-pink/20">
+                            <button onclick="editAdminCake('${cake.id}')" class="flex-1 bg-dulce-pink text-dulce-chocolate font-bold py-1.5 rounded-lg text-[10px]">Editar</button>
+                            <button onclick="deleteAdminCake('${cake.id}')" class="flex-1 bg-rose-600 text-white font-bold py-1.5 rounded-lg text-[10px]">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function resetCakeAdminForm() {
+            document.getElementById('admin-cake-edit-id').value = '';
+            document.getElementById('admin-cake-title').value = '';
+            document.getElementById('admin-cake-price-person').value = '';
+            document.getElementById('admin-cake-img').value = '';
+            document.getElementById('admin-cake-desc').value = '';
+        }
+
+        function editAdminCake(cakeId) {
+            const cake = state.cakes.find(c => c.id === cakeId);
+            if(cake) {
+                document.getElementById('admin-cake-edit-id').value = cake.id;
+                document.getElementById('admin-cake-title').value = cake.title;
+                document.getElementById('admin-cake-price-person').value = cake.basePricePerPerson;
+                document.getElementById('admin-cake-img').value = cake.img;
+                document.getElementById('admin-cake-desc').value = cake.desc;
+                document.getElementById('admin-view-tab-tortas').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function saveAdminCake(e) {
+            e.preventDefault();
+            const editId = document.getElementById('admin-cake-edit-id').value;
+            const title = document.getElementById('admin-cake-title').value.trim();
+            const price = parseInt(document.getElementById('admin-cake-price-person').value) || 5000;
+            const img = document.getElementById('admin-cake-img').value.trim();
+            const desc = document.getElementById('admin-cake-desc').value.trim();
+
+            let cakeObj = null;
+
+            if (editId) {
+                const cake = state.cakes.find(c => c.id === editId);
+                if(cake) {
+                    cake.title = title;
+                    cake.basePricePerPerson = price;
+                    cake.img = img;
+                    cake.desc = desc;
+                    cakeObj = cake;
+                }
+            } else {
+                cakeObj = {
+                    id: "CAKE-" + (Date.now()),
+                    title: title,
+                    desc: desc,
+                    basePricePerPerson: price,
+                    img: img
+                };
+                state.cakes.push(cakeObj);
+            }
+
+            saveStateToStorage();
+            if(cakeObj) syncWithCloud("SAVE_CAKE", cakeObj);
+            renderCakesCatalog();
+            renderAdminCakesList();
+            resetCakeAdminForm();
+            showToast("Galería de tortas actualizada.", "success");
+        }
+
+        function deleteAdminCake(cakeId) {
+            state.cakes = state.cakes.filter(c => c.id !== cakeId);
+            saveStateToStorage();
+            syncWithCloud("DELETE_CAKE", { id: cakeId });
+            renderCakesCatalog();
+            renderAdminCakesList();
+            showToast("Torta eliminada de la galería.", "info");
+        }
+
+        function renderAdminFlavorsAndFillings() {
+            const flavorsList = document.getElementById('admin-flavors-list');
+            const fillingsList = document.getElementById('admin-fillings-list');
+            const flavorBadge = document.getElementById('flavor-count-badge');
+            const fillingBadge = document.getElementById('filling-count-badge');
+
+            if(flavorsList && state.cakeFlavors) {
+                flavorBadge.innerText = state.cakeFlavors.length;
+                flavorsList.innerHTML = state.cakeFlavors.map((f, idx) => `
+                    <li class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-dulce-pink/30 font-semibold text-dulce-chocolate">
+                        <span>${f}</span>
+                        <button onclick="deleteFlavor(${idx})" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-0.5"><i class="fa-solid fa-trash"></i></button>
+                    </li>
+                `).join('');
+            }
+
+            if(fillingsList && state.cakeFillings) {
+                fillingBadge.innerText = state.cakeFillings.length;
+                fillingsList.innerHTML = state.cakeFillings.map((f, idx) => `
+                    <li class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-dulce-pink/30 font-semibold text-dulce-chocolate">
+                        <span>${f}</span>
+                        <button onclick="deleteFilling(${idx})" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-0.5"><i class="fa-solid fa-trash"></i></button>
+                    </li>
+                `).join('');
+            }
+        }
+
+        function addNewFlavor() {
+            const input = document.getElementById('admin-new-flavor-input');
+            const val = input.value.trim();
+            if(val) {
+                if(!state.cakeFlavors) state.cakeFlavors = [];
+                state.cakeFlavors.push(val);
+                input.value = '';
+                saveStateToStorage();
+                syncWithCloud("ADD_OPTION", { type: "sabor", name: val });
+                renderAdminFlavorsAndFillings();
+                renderFlavorsAndFillingsSelects();
+                showToast("Sabor de bizcocho agregado.", "success");
+            }
+        }
+
+        function deleteFlavor(idx) {
+            const deleted = state.cakeFlavors[idx];
+            state.cakeFlavors.splice(idx, 1);
+            saveStateToStorage();
+            if(deleted) syncWithCloud("DELETE_OPTION", { type: "sabor", name: deleted });
+            renderAdminFlavorsAndFillings();
+            renderFlavorsAndFillingsSelects();
+            showToast("Sabor eliminado.", "info");
+        }
+
+        function addNewFilling() {
+            const input = document.getElementById('admin-new-filling-input');
+            const val = input.value.trim();
+            if(val) {
+                if(!state.cakeFillings) state.cakeFillings = [];
+                state.cakeFillings.push(val);
+                input.value = '';
+                saveStateToStorage();
+                syncWithCloud("ADD_OPTION", { type: "relleno", name: val });
+                renderAdminFlavorsAndFillings();
+                renderFlavorsAndFillingsSelects();
+                showToast("Relleno agregado.", "success");
+            }
+        }
+
+        function deleteFilling(idx) {
+            const deleted = state.cakeFillings[idx];
+            state.cakeFillings.splice(idx, 1);
+            saveStateToStorage();
+            if(deleted) syncWithCloud("DELETE_OPTION", { type: "relleno", name: deleted });
+            renderAdminFlavorsAndFillings();
+            renderFlavorsAndFillingsSelects();
+            showToast("Relleno eliminado.", "info");
+        }
+
+        function renderAdminOrdersTable() {
+            const tbody = document.getElementById('admin-orders-table-rows');
+            const emptyMsg = document.getElementById('admin-empty-orders-msg');
+            const badge = document.getElementById('admin-orders-count-badge');
+
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            let filtered = [...state.orders];
+            if (activeFilter !== 'todos') {
+                filtered = filtered.filter(o => o.status === activeFilter);
+            }
+
+            badge.innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+
+            filtered.forEach((o, index) => {
+                let statusBadgeClass = "bg-amber-100 text-amber-800 border-amber-200";
+                if(o.status === 'En camino') statusBadgeClass = "bg-blue-100 text-blue-800 border-blue-200";
+                if(o.status === 'Entregado') statusBadgeClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
+
+                let notifyMsg = `¡Hola ${o.clientName}! 🍰 Jessica V te saluda. Tu pedido *#${o.id}* (${o.itemTitle}) ha sido procesado y se encuentra en estado: *${o.status.toUpperCase()}*. ${o.status==='En camino'?'🛵 El domiciliario va hacia tu dirección.':''}`;
+                let clientCleanPhone = o.clientPhone.replace(/[^0-9]/g, '');
+                if(!clientCleanPhone.startsWith('57')) clientCleanPhone = '57' + clientCleanPhone;
+                let waClientUrl = `https://wa.me/${clientCleanPhone}?text=${encodeURIComponent(notifyMsg)}`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-dulce-warmCream/60 transition">
+                        <td class="p-3 font-extrabold text-dulce-darkRose">${o.id}</td>
+                        <td class="p-3"><span class="bg-dulce-rose text-dulce-chocolate font-bold px-2 py-0.5 rounded text-[10px]">${o.type}</span></td>
+                        <td class="p-3">
+                            <strong class="text-dulce-chocolate block">${o.clientName}</strong>
+                            <span class="text-neutral-500 text-[10px]"><i class="fa-solid fa-phone"></i> ${o.clientPhone}</span>
+                        </td>
+                        <td class="p-3 font-medium text-neutral-600 max-w-xs break-words">${o.address}</td>
+                        <td class="p-3 font-semibold text-dulce-chocolate max-w-xs">${o.itemTitle}</td>
+                        <td class="p-3 text-[10px] font-bold text-neutral-500">${o.payment}</td>
+                        <td class="p-3 font-black text-dulce-darkRose text-sm">$${o.total.toLocaleString()}</td>
+                        <td class="p-3 text-center space-y-1.5">
+                            <select onchange="updateOrderStatus('${o.id}', this.value)" class="bg-white border border-dulce-pink/40 px-2 py-1 rounded-lg font-bold text-[10px] text-dulce-chocolate outline-none">
+                                <option value="Pendiente" ${o.status==='Pendiente'?'selected':''}>Pendiente</option>
+                                <option value="En camino" ${o.status==='En camino'?'selected':''}>En Camino 🛵</option>
+                                <option value="Entregado" ${o.status==='Entregado'?'selected':''}>Entregado ✓</option>
+                            </select>
+
+                            <a href="${waClientUrl}" target="_blank" class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] shadow-sm transition">
+                                <i class="fa-brands fa-whatsapp"></i> Avisar
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = state.orders.find(o => o.id === orderId);
+            if(order) {
+                order.status = newStatus;
+                saveStateToStorage();
+                syncWithCloud("UPDATE_ORDER_STATUS", { id: orderId, status: newStatus });
+                renderAdminOrdersTable();
+                showToast(`Estado de pedido #${orderId} cambiado a: ${newStatus}`, "info");
+            }
+        }
+
+        function filterAdminOrders(filter) {
+            activeFilter = filter;
+            ['todos', 'Pendiente', 'En camino', 'Entregado'].forEach(f => {
+                const btn = document.getElementById(`filter-btn-${f}`);
+                if(btn) {
+                    if(f === filter) {
+                        btn.className = "px-3 py-1.5 rounded-xl font-bold bg-dulce-chocolate text-white shadow-sm";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-xl font-bold bg-neutral-100 text-neutral-600 hover:bg-neutral-200";
+                    }
+                }
+            });
+            renderAdminOrdersTable();
+        }
+
+        function refreshOrdersFromStorage() {
+            loadStateFromStorage();
+            loadDataFromCloud();
+            showToast("Sincronizando datos con la nube...", "info");
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
